@@ -111,3 +111,16 @@ h1 {
   max-width: 1000px;  /* Prevents it from getting too huge */
   height: auto;
 }
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;       /* This allows buttons to drop to the next line */
+  justify-content: center; /* Keeps them centered when they wrap */
+  gap: 10px;             /* Adds clean spacing between buttons */
+  width: 100%;           /* Ensures it stays inside the parent */
+}
+
+.button {
+  flex: 1 1 120px;       /* Allows buttons to grow, but stay at least 120px wide */
+  max-width: 100%;       /* Prevents buttons from ever being wider than the card */
+}
