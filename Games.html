@@ -61,182 +61,91 @@
 </head>
 <body>
 
-
-
-<div class="card">
-
-<style>
-        .game-container {
-            background: #f4f4f4;
-            color: #333;
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 800px;
-            margin: 20px auto;
-            text-align: center;
-            border: 5px solid #ffd700;
-        }
-
-        .issue-box {
-            background: #001a4d;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 1.4rem;
-            margin-bottom: 30px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .solution-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .solution-btn {
-            padding: 20px;
-            background: #4079c9;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: transform 0.2s, background 0.3s;
-        }
-
-        .solution-btn:hover {
-            background: #001a4d;
-            transform: scale(1.03);
-        }
-
-        #feedback {
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #ddd;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        #progress-fill {
-            height: 100%;
-            background: #ffd700;
-            width: 0%;
-            transition: width 0.4s;
-        }
-    </style>
-</head>
-<body>
-
     <main class="container">
-        <div class="game-container">
-            <h2 style="color: #001a4d;">The Advocate's Challenge</h2>
-            <p>Match the <strong>Social Issue</strong> to the correct <strong>Field of Social Science</strong>!</p>
-            
-            <div class="progress-bar"><div id="progress-fill"></div></div>
-            
-            <div id="game-ui">
-                <div class="issue-box" id="current-issue">Loading Issue...</div>
-                <div class="solution-grid" id="options-ui">
-                    </div>
-                <div id="feedback"></div>
-            </div>
+        <h1>HUMSS Trivia Challenge</h1>
+        
+        <div class="game-box" id="game-container">
+            <div id="score-display">Score: 0</div>
+            <h2 id="question">Loading Question...</h2>
+            <div id="options">
+                </div>
         </div>
     </main>
 
     <script>
-        const scenarios = [
+        const questions = [
             {
-                issue: "Analyzing how ancient civilizations lived based on artifacts.",
-                correct: "Anthropology",
-                others: ["Economics", "Linguistics", "Political Science"]
+                q: "Which branch of Social Science deals with the study of government and politics?",
+                options: ["Sociology", "Political Science", "Anthropology", "Psychology"],
+                answer: 1
             },
             {
-                issue: "Studying the distribution of wealth and scarcity of resources.",
-                correct: "Economics",
-                others: ["Psychology", "History", "Sociology"]
+                q: "What does the 'S' in HUMSS stand for?",
+                options: ["Sciences", "Society", "Social", "Studies"],
+                answer: 2
             },
             {
-                issue: "Investigating how groups of people behave in a city environment.",
-                correct: "Sociology",
-                others: ["Geography", "Psychology", "Demography"]
+                q: "Who is known as the 'Father of Modern Psychology'?",
+                options: ["Sigmund Freud", "Wilhelm Wundt", "B.F. Skinner", "Plato"],
+                answer: 1
             },
             {
-                issue: "Creating laws to ensure fair elections in a country.",
-                correct: "Political Science",
-                others: ["Anthropology", "Philosophy", "Linguistics"]
-            },
-            {
-                issue: "Mapping the relationship between people and their environment.",
-                correct: "Geography",
-                others: ["Sociology", "Economics", "History"]
+                q: "In Social Sciences, what is the study of human societies and their development?",
+                options: ["Economics", "Geography", "Sociology", "Linguistics"],
+                answer: 2
             }
         ];
 
-        let level = 0;
+        let currentQ = 0;
+        let score = 0;
 
-        function initLevel() {
-            if (level >= scenarios.length) {
-                showWinScreen();
-                return;
-            }
+        function loadQuestion() {
+            const qData = questions[currentQ];
+            document.getElementById("question").innerText = qData.q;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
 
-            const data = scenarios[level];
-            document.getElementById("current-issue").innerText = data.issue;
-            document.getElementById("feedback").innerText = "";
-            document.getElementById("progress-fill").style.width = (level / scenarios.length * 100) + "%";
-
-            // Mix correct answer with others
-            let choices = [data.correct, ...data.others];
-            choices.sort(() => Math.random() - 0.5);
-
-            const optionsUi = document.getElementById("options-ui");
-            optionsUi.innerHTML = "";
-
-            choices.forEach(choice => {
+            qData.options.forEach((opt, index) => {
                 const btn = document.createElement("button");
-                btn.className = "solution-btn";
-                btn.innerText = choice;
-                btn.onclick = () => checkAnswer(choice, data.correct);
-                optionsUi.appendChild(btn);
+                btn.innerText = opt;
+                btn.className = "option-btn";
+                btn.onclick = () => checkAnswer(index);
+                optionsDiv.appendChild(btn);
             });
         }
 
-        function checkAnswer(selected, correct) {
-            const feedback = document.getElementById("feedback");
-            if (selected === correct) {
-                feedback.style.color = "green";
-                feedback.innerText = "✓ Correct Match!";
-                level++;
-                setTimeout(initLevel, 1000);
+        function checkAnswer(choice) {
+            if (choice === questions[currentQ].answer) {
+                score++;
+                alert("Correct! Well done.");
             } else {
-                feedback.style.color = "red";
-                feedback.innerText = "× That belongs to another field. Try again!";
+                alert("Incorrect. Keep studying!");
+            }
+
+            currentQ++;
+            if (currentQ < questions.length) {
+                document.getElementById("score-display").innerText = "Score: " + score;
+                loadQuestion();
+            } else {
+                showResults();
             }
         }
 
-        function showWinScreen() {
-            document.getElementById("progress-fill").style.width = "100%";
-            document.getElementById("game-ui").innerHTML = `
-                <h2 style="color: #27ae60;">Expert Advocate Status Reached!</h2>
-                <p>You have successfully categorized all social issues.</p>
-                <button onclick="location.reload()" class="btn">Play Again</button>
-                <a href="games.html" class="btn" style="background: #001a4d; color:white;">Exit Game</a>
+        function showResults() {
+            document.getElementById("game-container").innerHTML = `
+                <h2>Quiz Complete!</h2>
+                <p style="font-size: 1.5rem;">Your Final Score: ${score} / ${questions.length}</p>
+                <a href="games.html" class="btn">Back to Games</a>
+                <button onclick="location.reload()" class="btn" style="background:#4079c9; color:white; border:none; margin-left:10px; cursor:pointer;">Retry</button>
             `;
         }
 
-        initLevel();
+        // Start the game
+        loadQuestion();
     </script>
+
+            </div>
+
 
 
 
