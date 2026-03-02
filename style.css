@@ -1,0 +1,113 @@
+/* --- Global Styles --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    background-color: #316eb5; /* Default background */
+    color: white;
+}
+
+/* --- Header Styles (Dark Blue) --- */
+.main-header {
+    background-color: #001a4d;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand-name {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* --- Navigation Styles (Light Blue) --- */
+.main-nav {
+    background-color: #4079c9;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap; /* Helps on smaller screens */
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #ffd700;
+}
+
+/* --- Content Areas --- */
+.container {
+    padding: 40px 5%;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Grid Layout for Cards */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img, .card video {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Keeps images looking good */
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #ffd700;
+    color: #001a4d;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.my-video {
+    width: 100%;       /* Fills the container */
+  max-width: 1000px;  /* Prevents it from getting too huge */
+  height: auto;
+}
