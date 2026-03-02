@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCBA - Games</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+            <h1 class="brand-name">LCBA</h1>
+<img src="lcba.png" width="100" height="100">
+        </div>
+    </header>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">LCBA</a></li>
+            <li><a href="HUMMS.html">HUMSS</a></li>
+            <li><a href="Image.html">Image Gallery</a></li>
+            <li><a href="Video.html">Video Gallery</a></li>
+            <li><a href="Games.html">Games</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <h1>Educational Games</h1>
+        <div class="grid-layout">
+            <div class="card">
+             
+              
+<style>
+        .game-box {
+            background: white;
+            color: #001a4d;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #4079c9;
+            background: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background: #4079c9;
+            color: white;
+        }
+        #score-display { font-weight: bold; color: #4079c9; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+
+
+<div class="card">
+
+<style>
+        .game-container {
+            background: #f4f4f4;
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+            border: 5px solid #ffd700;
+        }
+
+        .issue-box {
+            background: #001a4d;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .solution-btn {
+            padding: 20px;
+            background: #4079c9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .solution-btn:hover {
+            background: #001a4d;
+            transform: scale(1.03);
+        }
+
+        #feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: #ffd700;
+            width: 0%;
+            transition: width 0.4s;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <div class="game-container">
+            <h2 style="color: #001a4d;">The Advocate's Challenge</h2>
+            <p>Match the <strong>Social Issue</strong> to the correct <strong>Field of Social Science</strong>!</p>
+            
+            <div class="progress-bar"><div id="progress-fill"></div></div>
+            
+            <div id="game-ui">
+                <div class="issue-box" id="current-issue">Loading Issue...</div>
+                <div class="solution-grid" id="options-ui">
+                    </div>
+                <div id="feedback"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const scenarios = [
+            {
+                issue: "Analyzing how ancient civilizations lived based on artifacts.",
+                correct: "Anthropology",
+                others: ["Economics", "Linguistics", "Political Science"]
+            },
+            {
+                issue: "Studying the distribution of wealth and scarcity of resources.",
+                correct: "Economics",
+                others: ["Psychology", "History", "Sociology"]
+            },
+            {
+                issue: "Investigating how groups of people behave in a city environment.",
+                correct: "Sociology",
+                others: ["Geography", "Psychology", "Demography"]
+            },
+            {
+                issue: "Creating laws to ensure fair elections in a country.",
+                correct: "Political Science",
+                others: ["Anthropology", "Philosophy", "Linguistics"]
+            },
+            {
+                issue: "Mapping the relationship between people and their environment.",
+                correct: "Geography",
+                others: ["Sociology", "Economics", "History"]
+            }
+        ];
+
+        let level = 0;
+
+        function initLevel() {
+            if (level >= scenarios.length) {
+                showWinScreen();
+                return;
+            }
+
+            const data = scenarios[level];
+            document.getElementById("current-issue").innerText = data.issue;
+            document.getElementById("feedback").innerText = "";
+            document.getElementById("progress-fill").style.width = (level / scenarios.length * 100) + "%";
+
+            // Mix correct answer with others
+            let choices = [data.correct, ...data.others];
+            choices.sort(() => Math.random() - 0.5);
+
+            const optionsUi = document.getElementById("options-ui");
+            optionsUi.innerHTML = "";
+
+            choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "solution-btn";
+                btn.innerText = choice;
+                btn.onclick = () => checkAnswer(choice, data.correct);
+                optionsUi.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            const feedback = document.getElementById("feedback");
+            if (selected === correct) {
+                feedback.style.color = "green";
+                feedback.innerText = "✓ Correct Match!";
+                level++;
+                setTimeout(initLevel, 1000);
+            } else {
+                feedback.style.color = "red";
+                feedback.innerText = "× That belongs to another field. Try again!";
+            }
+        }
+
+        function showWinScreen() {
+            document.getElementById("progress-fill").style.width = "100%";
+            document.getElementById("game-ui").innerHTML = `
+                <h2 style="color: #27ae60;">Expert Advocate Status Reached!</h2>
+                <p>You have successfully categorized all social issues.</p>
+                <button onclick="location.reload()" class="btn">Play Again</button>
+                <a href="games.html" class="btn" style="background: #001a4d; color:white;">Exit Game</a>
+            `;
+        }
+
+        initLevel();
+    </script>
+
+
+
+        </div>
+    </main>
+
+<footer>
+<div class="card">
+<h3>CONTACT INFORMATION</h3>
+<p>Contact No: 0961-074-5530</p>
+<p>info@lcba.edu.ph</p>
+</footer>
+
+</body>
+</html>
